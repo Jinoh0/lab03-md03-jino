@@ -67,4 +67,28 @@ router.delete("/delete/:id", async (req, res) => {
   }
 });
 
+router.post("/create-beer", async (req, res) => {
+  try {
+    const newBeer = await ReviewModel.create(req.body);
+    return res.status(201).json(newBeer);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json(error);
+  }
+});
+
+router.post("/make-beer", async (req, res) => {
+  try {
+    const allReviews = await ReviewModel.findByIdAndUpdate(
+      ReviewModel._id,
+      { $push: { beer: beer._id } },
+      { new: true }
+    );
+    return res.status(200).json(allReviews);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json(error);
+  }
+});
+
 module.exports = router;
